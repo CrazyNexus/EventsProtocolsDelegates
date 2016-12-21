@@ -7,6 +7,7 @@
 using System;
 
 using UIKit;
+using Foundation;
 
 namespace EventsProtocolsDelegates
 {
@@ -21,12 +22,51 @@ namespace EventsProtocolsDelegates
 		{
 			base.ViewDidLoad();
 			// Perform any additional setup after loading the view, typically from a nib.
+
+			button1.AddTarget(Button2_TouchUpInside, UIControlEvent.TouchUpInside | UIControlEvent.TouchCancel);
 		}
 
 		public override void DidReceiveMemoryWarning()
 		{
 			base.DidReceiveMemoryWarning();
 			// Release any cached data, images, etc that aren't in use.
+		}
+
+		void Button2_TouchUpInside(object sender, EventArgs e)
+		{
+			if (sender == button1)
+				Console.WriteLine("Button 1 fired");
+			else
+			{
+				ImyFace gring = new myclass();
+				gring.printName();
+			}
+
+
+			MyAlertDelegate alertDelegate = new MyAlertDelegate();
+			UIAlertView alertView = new UIAlertView("What's up?", "What do You want from me?", alertDelegate, "Cancel", new string[] { "Yes", "No", "Maybe" });
+			alertView.Show();
+		}
+	}
+
+	interface ImyFace
+	{
+		void printName();
+	}
+
+	public class myclass : ImyFace
+	{
+		public void printName()
+		{
+			Console.WriteLine("Thomas");
+		}
+	}
+
+	public class MyAlertDelegate : UIAlertViewDelegate
+	{
+		public override void Clicked(UIAlertView alertview, nint buttonIndex)
+		{
+			Console.WriteLine(buttonIndex.ToString() + " clicked");
 		}
 	}
 }
